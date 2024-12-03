@@ -66,3 +66,11 @@ export type Coordinates = {
   lat: number;
   lon: number;
 };
+
+// Types for better clarity
+export type GeoResponse = Array<{
+  name: string;
+  country: string;
+  lat: number;
+  lon: number;
+}>;

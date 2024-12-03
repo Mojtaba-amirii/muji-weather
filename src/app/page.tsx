@@ -1,17 +1,18 @@
 "use client";
 
-import { WeatherData } from "@/types/types";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { format, fromUnixTime, parseISO } from "date-fns";
+import { BsArrowDown, BsArrowUp } from "react-icons/bs";
+
 import { Container } from "@/components/Container";
 import { KelvinToCelsius } from "@/utils/KelvinToCelsius";
-import { BsArrowDown, BsArrowUp } from "react-icons/bs";
 import { WeatherDetails } from "@/components/WeatherDetails";
 import { meterToKilometer } from "@/utils/meterToKilometer";
 import { ForecastWeatherDetails } from "@/components/ForecastWeatherDetails";
 import { useCity } from "@/contexts/CityContext";
 import WeatherSkeleton from "@/components/WeatherAppSkeleton";
+import { WeatherData } from "@/types/types";
 
 export default function Home() {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
@@ -50,11 +51,11 @@ export default function Home() {
   }
 
   if (error) {
-    return <div className="container mx-auto">Error: {error}</div>;
+    return <div className="container mx-auto text-red-500">Error: {error}</div>;
   }
 
   if (!weatherData) {
-    return <div className="container mx-auto">Loading...</div>;
+    return <div className="container mx-auto">No weather data available </div>;
   }
 
   const uniqueDates = [
@@ -77,7 +78,7 @@ export default function Home() {
     <main className="container mx-auto my-16 flex flex-col gap-12 px-4">
       {/* today data */}
       <section className=" flex flex-col gap-y-6">
-        <h2 className=" text-xl">
+        <h2 className=" text-2xl">
           {format(parseISO(weatherData.list[0].dt_txt), "EEEE") ??
             "date not found"}{" "}
           <span className=" text-lg">
@@ -159,7 +160,7 @@ export default function Home() {
 
       {/* 7 days forecast data */}
       <section className=" w-full flex flex-col gap-4">
-        <h3 className=" text-xl"> Forecast (7 days)</h3>
+        <h3 className=" text-2xl"> Forecast (7 days)</h3>
         {firstDataForEveryDay.map(
           (d, i) =>
             d && (

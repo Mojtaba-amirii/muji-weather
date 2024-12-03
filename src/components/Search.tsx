@@ -15,7 +15,10 @@ const Search = (props: SearchProps) => {
   return (
     <form
       onSubmit={onSubmit}
-      className={cn(" relative flex justify-center items-center", className)}
+      className={cn(
+        " relative flex justify-center items-center w-full",
+        className
+      )}
     >
       <input
         type="text"
@@ -27,10 +30,11 @@ const Search = (props: SearchProps) => {
         onChange={onChange}
         autoComplete="off"
       />
+
       <button
-        type="button"
+        type="submit"
         title="Search"
-        className="flex-shrink-0 text-blue-600 cursor-pointer hover:bg-blue-300 border border-blue-600  p-1.5 rounded-md"
+        className="flex-shrink-0 text-blue-600 cursor-pointer hover:bg-blue-300 border border-blue-600 transition-colors  p-1.5 rounded-md"
       >
         <IoSearch className="text-2xl" />
       </button>

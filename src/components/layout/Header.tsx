@@ -1,8 +1,9 @@
 "use client";
 
 import { MdMyLocation, MdOutlineLocationCity, MdWbSunny } from "react-icons/md";
-import Search from "../Search";
 import { ChangeEvent, FormEvent, useState } from "react";
+
+import Search from "../Search";
 import { useCity } from "@/contexts/CityContext";
 
 const SuggestionBox = ({
@@ -51,7 +52,7 @@ const Header = () => {
     if (value.length > 1) {
       try {
         const response = await fetch(
-          `/api/city?q=${encodeURIComponent(value)}`
+          `/api/weather?q=${encodeURIComponent(value)}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch data");
@@ -77,7 +78,6 @@ const Header = () => {
     if (searchCity.length < 2) {
       return setError("Please enter a valid city name");
     }
-
     try {
       setCity(searchCity);
       setShowSuggestions(false);
@@ -93,7 +93,7 @@ const Header = () => {
         const { latitude, longitude } = position.coords;
         try {
           const response = await fetch(
-            `/api/location?lat=${latitude}&lon=${longitude}`
+            `/api/weather?lat=${latitude}&lon=${longitude}`
           );
           if (!response.ok) {
             throw new Error("Failed to fetch data");
