@@ -3,26 +3,33 @@
 import { WeatherData } from "@/types/types";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import LoadingSpinner from "./Loading";
-import { format, parseISO } from "date-fns";
+import { format, fromUnixTime, parseISO } from "date-fns";
 import { Container } from "@/components/Container";
 import { KelvinToCelsius } from "@/utils/KelvinToCelsius";
 import { BsArrowDown, BsArrowUp } from "react-icons/bs";
+import { WeatherDetails } from "@/components/WeatherDetails";
+import { meterToKilometer } from "@/utils/meterToKilometer";
+import { ForecastWeatherDetails } from "@/components/ForecastWeatherDetails";
+import { useCity } from "@/contexts/CityContext";
+import WeatherSkeleton from "@/components/WeatherAppSkeleton";
 
 export default function Home() {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { city } = useCity();
 
   useEffect(() => {
     const fetchWeatherData = async () => {
+      setIsLoading(true);
       try {
-        const response = await fetch("/api/weather");
+        const response = await fetch(
+          `/api/weather?city=${encodeURIComponent(city)}`
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch weather data");
         }
         const data: WeatherData = await response.json();
-        console.log("Weather data:", data);
         setWeatherData(data);
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -36,10 +43,10 @@ export default function Home() {
     };
 
     fetchWeatherData();
-  }, []);
+  }, [city]);
 
   if (isLoading) {
-    return <LoadingSpinner />;
+    return <WeatherSkeleton />;
   }
 
   if (error) {
@@ -50,10 +57,26 @@ export default function Home() {
     return <div className="container mx-auto">Loading...</div>;
   }
 
+  const uniqueDates = [
+    ...new Set(
+      weatherData.list.map(
+        (entry) => new Date(entry.dt * 1000).toISOString().split("T")[0]
+      )
+    ),
+  ];
+
+  const firstDataForEveryDay = uniqueDates.map((date) => {
+    return weatherData.list.find((entry) => {
+      const entryDate = new Date(entry.dt * 1000).toISOString().split("T")[0];
+      const entryTime = new Date(entry.dt * 1000).getHours();
+      return entryDate === date && entryTime >= 6;
+    });
+  });
+
   return (
-    <main className="container mx-auto">
+    <main className="container mx-auto my-16 flex flex-col gap-12 px-4">
       {/* today data */}
-      <section>
+      <section className=" flex flex-col gap-y-6">
         <h2 className=" text-xl">
           {format(parseISO(weatherData.list[0].dt_txt), "EEEE") ??
             "date not found"}{" "}
@@ -65,7 +88,7 @@ export default function Home() {
         </h2>
 
         <Container className=" gap-10 px-6 items-center">
-          <div className=" flex flex-col px-4 gap-1 w-1/5">
+          <div className=" flex flex-col px-4 gap-1 w-1/6">
             <span className=" text-5xl">
               {KelvinToCelsius(weatherData.list[0].main.temp)}°C
             </span>
@@ -116,13 +139,55 @@ export default function Home() {
             />
           </Container>
 
-          <Container className=" flex items-center justify-between bg-yellow-400/80 overflow-x-auto"></Container>
+          <Container className=" flex items-center justify-between bg-yellow-400/80 overflow-x-auto px-6">
+            <WeatherDetails
+              visibility={meterToKilometer(weatherData.list[0].visibility)}
+              humidity={`${weatherData.list[0].main.humidity}%`}
+              windSpeed={`${(weatherData.list[0].wind.speed * 3.6).toFixed(
+                0
+              )} km/h`}
+              airPressure={`${weatherData.list[0].main.pressure} hPa`}
+              sunrise={format(
+                fromUnixTime(weatherData.city.sunrise),
+                "HH:mm a"
+              )}
+              sunset={format(fromUnixTime(weatherData.city.sunset), "HH:mm a")}
+            />
+          </Container>
         </div>
       </section>
 
       {/* 7 days forecast data */}
       <section className=" w-full flex flex-col gap-4">
         <h3 className=" text-xl"> Forecast (7 days)</h3>
+        {firstDataForEveryDay.map(
+          (d, i) =>
+            d && (
+              <ForecastWeatherDetails
+                key={i}
+                description={d.weather[0].description}
+                feels_like={d.main.feels_like}
+                temp={d.main.temp}
+                temp_max={d.main.temp_max}
+                temp_min={d.main.temp_min}
+                weatherIcon={d.weather[0].icon}
+                date={format(parseISO(d.dt_txt), "dd/MM")}
+                day={format(parseISO(d.dt_txt), "EEEE")}
+                visibility={meterToKilometer(d.visibility)}
+                humidity={`${d.main.humidity}%`}
+                windSpeed={`${(d.wind.speed * 3.6).toFixed(0)} km/h`}
+                airPressure={`${d.main.pressure} hPa`}
+                sunrise={format(
+                  fromUnixTime(weatherData.city.sunrise),
+                  "HH:mm a"
+                )}
+                sunset={format(
+                  fromUnixTime(weatherData.city.sunset),
+                  "HH:mm a"
+                )}
+              />
+            )
+        )}
       </section>
     </main>
   );

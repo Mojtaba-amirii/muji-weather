@@ -25,6 +25,7 @@ const Search = (props: SearchProps) => {
         className="w-full outline-none bg-transparent border p-1.5 rounded focus:border-blue-500 mr-0.5"
         value={value}
         onChange={onChange}
+        autoComplete="off"
       />
       <button
         type="button"

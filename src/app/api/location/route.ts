@@ -1,18 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-  if (!req.url) {
-    return NextResponse.json({ error: "URL is missing" }, { status: 400 });
+  const { searchParams } = new URL(req.url);
+  const lat = searchParams.get("lat");
+  const lon = searchParams.get("lon");
+
+  if (!lat || !lon) {
+    return NextResponse.json(
+      { error: "Latitude and longitude are required" },
+      { status: 400 }
+    );
   }
-  const url = new URL(req.url);
-  const searchParams = url.searchParams;
-  const city = searchParams.get("city") || "Stockholm";
 
   try {
     const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(
-        city
-      )}&appid=${process.env.OPENWEATHER_API_KEY}&cnt=40`
+      `https://api.openweathermap.org/data/2.5/forecast?lat=${encodeURIComponent(
+        lat
+      )}&lon=${encodeURIComponent(lon)}&appid=${
+        process.env.OPENWEATHER_API_KEY
+      }&cnt=40`
     );
 
     if (!response.ok) {
