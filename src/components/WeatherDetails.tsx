@@ -64,7 +64,9 @@ const SingleWeatherDetail = (props: SingleWeatherDetailProps) => {
   return (
     <div className=" flex flex-col items-center justify-between gap-2 text-xs font-semibold text-black/80">
       <p className=" whitespace-nowrap"> {information}</p>
-      <span className=" text-3xl"> {icon}</span>
+      <span className=" text-3xl" aria-hidden="true">
+        {icon}
+      </span>
       <p className=" whitespace-nowrap"> {value}</p>
     </div>
   );

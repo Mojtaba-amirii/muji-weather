@@ -28,16 +28,16 @@ export default function Home() {
           `/api/weather?city=${encodeURIComponent(city)}`
         );
         if (!response.ok) {
-          throw new Error("Failed to fetch weather data");
+          throw new Error(
+            `Failed to fetch weather data: ${response.statusText}`
+          );
         }
         const data: WeatherData = await response.json();
         setWeatherData(data);
       } catch (error: unknown) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("An unknown error occurred");
-        }
+        setError(
+          error instanceof Error ? error.message : "An unknown error occurred"
+        );
       } finally {
         setIsLoading(false);
       }
@@ -49,11 +49,9 @@ export default function Home() {
   if (isLoading) {
     return <WeatherSkeleton />;
   }
-
   if (error) {
     return <div className="container mx-auto text-red-500">Error: {error}</div>;
   }
-
   if (!weatherData) {
     return <div className="container mx-auto">No weather data available </div>;
   }
@@ -78,7 +76,7 @@ export default function Home() {
     <main className="container mx-auto my-16 flex flex-col gap-12 px-4">
       {/* today data */}
       <section className=" flex flex-col gap-y-6">
-        <h2 className=" text-2xl">
+        <h2 className=" text-2xl font-semibold">
           {format(parseISO(weatherData.list[0].dt_txt), "EEEE") ??
             "date not found"}{" "}
           <span className=" text-lg">
@@ -88,9 +86,9 @@ export default function Home() {
           {weatherData.city.name}
         </h2>
 
-        <Container className=" gap-10 px-6 items-center">
-          <div className=" flex flex-col px-4 gap-1 w-1/6">
-            <span className=" text-5xl">
+        <Container className=" gap-10 sm:px-6 items-center">
+          <div className=" flex flex-col sm:px-4 gap-1 w-1/6">
+            <span className=" text-3xl sm:text-5xl">
               {KelvinToCelsius(weatherData.list[0].main.temp)}°C
             </span>
             <p className=" text-xs space-x-1 whitespace-nowrap">
@@ -104,7 +102,7 @@ export default function Home() {
               <BsArrowUp className="inline" size={12} />
             </p>
           </div>
-          <div className=" flex gap-10 sm:gap-16 justify-between w-full overflow-x-auto">
+          <div className=" flex gap-6 sm:gap-16 justify-between w-full overflow-x-auto">
             {weatherData.list.map((forecast) => (
               <div
                 key={forecast.dt}
@@ -128,7 +126,7 @@ export default function Home() {
         </Container>
 
         <div className=" flex gap-4">
-          <Container className=" w-1/6 flex flex-col items-center justify-center gap-1 ">
+          <Container className=" flex-1 flex-col items-center justify-center gap-1 ">
             <p className=" capitalize text-center">
               {weatherData.list[0].weather[0].description}
             </p>
@@ -140,7 +138,7 @@ export default function Home() {
             />
           </Container>
 
-          <Container className=" flex items-center justify-between bg-yellow-400/80 overflow-x-auto px-6">
+          <Container className=" flex-3 items-center justify-between bg-yellow-400/80 overflow-x-auto px-6">
             <WeatherDetails
               visibility={meterToKilometer(weatherData.list[0].visibility)}
               humidity={`${weatherData.list[0].main.humidity}%`}
@@ -160,7 +158,7 @@ export default function Home() {
 
       {/* 7 days forecast data */}
       <section className=" w-full flex flex-col gap-4">
-        <h3 className=" text-2xl"> Forecast (7 days)</h3>
+        <h3 className=" text-2xl font-semibold"> Forecast (7 days)</h3>
         {firstDataForEveryDay.map(
           (d, i) =>
             d && (

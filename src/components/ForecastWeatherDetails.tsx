@@ -19,20 +19,24 @@ export const ForecastWeatherDetails = (props: ForecastWeatherDetailsProps) => {
 
   return (
     <Container className=" gap-4">
-      <section className=" flex gap-4 items-center px-4">
+      <section className=" flex gap-4 items-center sm:px-4">
         <div className=" flex flex-col items-center gap-1">
           <Image
             src={`http://openweathermap.org/img/wn/${weatherIcon}@4x.png`}
             alt={description}
+            priority
             width={50}
             height={50}
+            className=" object-contain"
           />
+          <h2 className=" text-sm font-medium"> {day}</h2>
           <p> {date}</p>
-          <p className=" text-sm"> {day}</p>
         </div>
 
-        <div className=" flex flex-col px-4">
-          <span className=" text-4xl">{KelvinToCelsius(temp)}°C</span>
+        <div className=" text-right flex flex-col sm:px-4">
+          <span className=" text-xl sm:text-4xl">
+            {KelvinToCelsius(temp)}°C
+          </span>
           <p className=" text-xs space-x-1 whitespace-nowrap">
             Feels like {KelvinToCelsius(feels_like) ?? "N/A"}°C
           </p>

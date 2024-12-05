@@ -5,6 +5,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 
 import Search from "../Search";
 import { useCity } from "@/contexts/CityContext";
+import Link from "next/link";
 
 const SuggestionBox = ({
   suggestions,
@@ -116,7 +117,11 @@ const Header = () => {
     <header className=" sticky top-0 left-0 z-10 bg-white shadow-sm py-2">
       <nav className=" container mx-auto flex flex-col sm:flex-row justify-between items-center ">
         <section className="flex flex-row items-center">
-          <h1 className="text-xl font-bold text-gray-800 p-4">Weather</h1>
+          <Link href="/">
+            <h1 className="text-xl font-bold text-gray-800 p-4">
+              Muji Weather
+            </h1>
+          </Link>
           <MdWbSunny className="text-4xl text-yellow-500" />
         </section>
 

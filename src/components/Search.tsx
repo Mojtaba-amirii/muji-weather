@@ -23,7 +23,7 @@ const Search = (props: SearchProps) => {
       <input
         type="text"
         id="search"
-        name="name"
+        name="search"
         placeholder="Search for a city ..."
         className="w-full outline-none bg-transparent border p-1.5 rounded focus:border-blue-500 mr-0.5"
         value={value}
