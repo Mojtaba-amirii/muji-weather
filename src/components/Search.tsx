@@ -25,7 +25,7 @@ const Search = (props: SearchProps) => {
         id="search"
         name="search"
         placeholder="Search for a city ..."
-        className="w-full outline-none bg-transparent border p-1.5 rounded focus:border-blue-500 mr-0.5"
+        className="w-full outline-hidden bg-transparent border p-1.5 rounded-sm focus:border-blue-500 mr-0.5"
         value={value}
         onChange={onChange}
         autoComplete="off"
@@ -34,7 +34,7 @@ const Search = (props: SearchProps) => {
       <button
         type="submit"
         title="Search"
-        className="flex-shrink-0 text-blue-600 cursor-pointer hover:bg-blue-300 border border-blue-600 transition-colors  p-1.5 rounded-md"
+        className="shrink-0 text-blue-600 cursor-pointer hover:bg-blue-300 border border-blue-600 transition-colors  p-1.5 rounded-md"
       >
         <IoSearch className="text-2xl" />
       </button>

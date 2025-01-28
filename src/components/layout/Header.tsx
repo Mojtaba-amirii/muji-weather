@@ -21,14 +21,14 @@ const SuggestionBox = ({
   return (
     <>
       {((showSuggestions && suggestions.length > 1) || error) && (
-        <ul className=" absolute top-11 left-0 border backdrop-blur-sm z-10 border-gray-400 rounded-md min-w-52 flex flex-col gap-1 p-2">
+        <ul className=" absolute top-11 left-0 border backdrop-blur-xs z-10 border-gray-400 rounded-md min-w-52 flex flex-col gap-1 p-2">
           {error && suggestions.length === 0 && (
-            <li className=" text-red-500 rounded p-1">Error: {error}</li>
+            <li className=" text-red-500 rounded-sm p-1">Error: {error}</li>
           )}
           {suggestions.map((city, index) => (
             <li
               key={index}
-              className=" cursor-pointer hover:bg-gray-200 rounded p-1"
+              className=" cursor-pointer hover:bg-gray-200 rounded-sm p-1"
               onClick={() => handleSuggestionClick(city)}
             >
               {city}
@@ -114,7 +114,7 @@ const Header = () => {
   };
 
   return (
-    <header className=" sticky top-0 left-0 z-10 bg-white shadow-sm py-2">
+    <header className=" sticky top-0 left-0 z-10 bg-white shadow-xs py-2">
       <nav className=" container mx-auto flex flex-col sm:flex-row justify-between items-center ">
         <section className="flex flex-row items-center">
           <Link href="/">
