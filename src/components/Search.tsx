@@ -1,6 +1,7 @@
-import { cn } from "@/utils/cn";
-import { ChangeEventHandler, FormEventHandler } from "react";
 import { IoSearch } from "react-icons/io5";
+import { ChangeEventHandler, FormEventHandler } from "react";
+
+import { cn } from "@/utils/cn";
 
 type SearchProps = {
   className?: string;

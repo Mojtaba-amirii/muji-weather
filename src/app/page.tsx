@@ -2,17 +2,17 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { format, fromUnixTime, parseISO } from "date-fns";
 import { BsArrowDown, BsArrowUp } from "react-icons/bs";
+import { format, fromUnixTime, parseISO } from "date-fns";
 
+import { WeatherData } from "@/types/types";
+import { useCity } from "@/contexts/CityContext";
 import { Container } from "@/components/Container";
 import { KelvinToCelsius } from "@/utils/KelvinToCelsius";
-import { WeatherDetails } from "@/components/WeatherDetails";
 import { meterToKilometer } from "@/utils/meterToKilometer";
-import { ForecastWeatherDetails } from "@/components/ForecastWeatherDetails";
-import { useCity } from "@/contexts/CityContext";
+import { WeatherDetails } from "@/components/WeatherDetails";
 import WeatherSkeleton from "@/components/WeatherAppSkeleton";
-import { WeatherData } from "@/types/types";
+import { ForecastWeatherDetails } from "@/components/ForecastWeatherDetails";
 
 export default function Home() {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);

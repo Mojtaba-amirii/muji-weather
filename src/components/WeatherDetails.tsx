@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { BsWind } from "react-icons/bs";
-import { FiDroplet } from "react-icons/fi";
 import { ImMeter } from "react-icons/im";
+import { FiDroplet } from "react-icons/fi";
 import { LuEye, LuSunrise, LuSunset } from "react-icons/lu";
 
 export interface WeatherDetailsProps {

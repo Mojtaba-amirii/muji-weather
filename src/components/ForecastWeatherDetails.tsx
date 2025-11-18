@@ -1,7 +1,8 @@
-import { KelvinToCelsius } from "@/utils/KelvinToCelsius";
-import { Container } from "./Container";
-import { WeatherDetails, WeatherDetailsProps } from "./WeatherDetails";
 import Image from "next/image";
+
+import { Container } from "./Container";
+import { KelvinToCelsius } from "@/utils/KelvinToCelsius";
+import { WeatherDetails, WeatherDetailsProps } from "./WeatherDetails";
 
 export interface ForecastWeatherDetailsProps extends WeatherDetailsProps {
   weatherIcon: string;
