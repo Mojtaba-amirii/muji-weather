@@ -1,9 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { MdMyLocation, MdOutlineLocationCity, MdWbSunny } from "react-icons/md";
 
-import Link from "next/link";
 import Search from "../Search";
 import { useCity } from "@/contexts/CityContext";
 
